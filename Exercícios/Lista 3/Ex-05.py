@@ -63,78 +63,40 @@ class UnorderedList:
        
 
     def remove(self, item):
-        current = self.head
-        previous = None
-        found = False
-        while not found:
-            if current.getData() == item:
-                found = True
-            else:
-                previous = current
-                current = current.getNext()
-
-        if previous == None:
-            self.head = current.getNext()
+        if self.head == None:
+            return
         else:
-            previous.setNext(current.getNext())
-
-    def index(self, item):
-        current = self.head
-        i = 0
-        cont = 0
-        while current:
-            if current.getData() == item:
-                return i
-            else:    
-                current = current.getNext()
-                i += 1
-
-    def get(self, index):
-        current = self.head
-        for i in range(index):
-            if current:
-                current = current.getNext()
+            current = self.head
+            previous = None
+            found = False
+            a = 0
+            while not found:
+                if current.getData() == item:
+                    a += 1 
+                    if a != 2:
+                        previous = current
+                        current = current.getNext()
+                else:
+                    previous = current
+                    current = current.getNext()
+                while a == 2 and not found:
+                    found = True
+                
+            if previous == None:
+                self.head = current.getNext()
             else:
-                raise IndexError
-        if current:
-            return current.getData()
-        raise IndexError
+                previous.setNext(current.getNext())
 
 def removerSegundaOcorrencia(lista, N):
-    idx = lista.search(N)
-    print(idx)
+    if lista.search(N) != None:
+        lista.remove(N)
+    return lista
 
-
-    
-
-
-
+	
 L = UnorderedList()
 L.add(42)
 L.add(42)
 L.add(42)
-print(removerSegundaOcorrencia(L, 2))
-"""
-def removerSegundaOcorrencia(lista, N):
-    lista_1 = []
-    l = str(lista).split()
-    cont = 0
-    for i in range(len(l)):
-        lista_1.append(int(l[i]))
-    for j in range(len(lista_1)):
-        if lista_1[j] == N:
-            cont += 1
-        elif cont == 2:
-            lista_1.pop(j-1)
-            break
-    
-    
-    
-    #l.append("")
-    #for i in range(len(l) - 1):
-        #if l[i] == l[i+1]:
-            #print("repetido")
-    
-    #for i in range(0, len(lista)):
-        #print(lista.head[i])
-"""
+L = removerSegundaOcorrencia(L, 42)
+L = removerSegundaOcorrencia(L, 42)
+print(f'Lista: {L}')
