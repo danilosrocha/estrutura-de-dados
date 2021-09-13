@@ -16,7 +16,7 @@ while len(lista) < n:
 if n == 1:
     print(lista[0])
 else:
-    for i in range(n-1):
-        print(lista[i], end=', ')
+    for i in range(n - 1):
+        print(lista[i], end = ', ')
     print(lista[i + 1]) 
 
