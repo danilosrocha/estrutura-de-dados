@@ -1,6 +1,7 @@
 # Funções
 def play(msc, tcd_msc, lis_und):
     global iniciou
+    
     iniciou += 1
     if len(msc) != 0:
         tcd_msc = True
@@ -28,35 +29,39 @@ def listar(msc):
                 print(msc[i], end = ',')
             print(msc[-1], end = '\n') # Printa a última sem a vírgula 
 
-def current(msc, tcd_msc, tc):
+def current(msc, pos_msc_tcd):
     if len(msc) == 0:
             print("Toque! Toque, Dijê!")
     else:
         if len(msc) == 1:
             print(msc[0])
         else:
-            if tcd_msc == True:
-                print(msc[0])
-            else:
-                print(msc[0])
+            print(msc[pos_msc_tcd])
 
 def add(msc, lis_complt, cmd):
+    global adicionou
     if len(comando) < 2:
-        return
+        adicionou = False
+        return 
     else:
+        adicionou = True
         msc.append(cmd[1])
         lis_complt.append(cmd[1])
     return msc
 
-def delet(msc, cmd, tcd_msc, lis_complt, ult_del, lis_und):
+def delet(msc, cmd, tcd_msc, pos_msc_tcd, ult_del, lis_und):
     global pos_del
+    global deletou
     if len(cmd) < 2:
+        deletou = False
         return
     else:
         if tcd_msc == True:
-            if cmd[1] == msc[0]:
-                lis_und.pop()
+            if cmd[1] == msc[pos_msc_tcd]:
+                deletou = False
             else:
+                deletou = True
+                pos_msc_tcd -= 1
                 if cmd[1] in msc:
                     i = 0
                     while True:
@@ -67,6 +72,7 @@ def delet(msc, cmd, tcd_msc, lis_complt, ult_del, lis_und):
                             break
                         i += 1
         else:
+            deletou = True
             if cmd[1] in msc:
                 i = 0
                 while True:
@@ -74,88 +80,120 @@ def delet(msc, cmd, tcd_msc, lis_complt, ult_del, lis_und):
                         msc.pop(i)
                         pos_del = i
                         ult_del.insert(0, cmd[1])
+                        pos_msc_tcd -= 1
                         break
                     i += 1
 
-def nexts(msc, lis_complt, cmd, tcd_msc):
+def nexts(msc, lis_complt, cmd, tcd_msc, pos_msc_tcd, ult_nxt, lis_und):
     global posicao
+    global nextoo
     if len(comando) < 2:
+        nextoo = False
         return 
     else:
         if len(msc) != 0 and cmd[1] in msc:
-            if cmd[1] == msc [0]:
+            if cmd[1] == msc[pos_msc_tcd]:
+                nextoo = False
                 return
             else:
-                posicao = 0
-                while True:
-                    if msc[posicao] == cmd[1]:
-                        if tcd_msc == True:
-                            msc.remove(f"{cmd[1]}")
-                            msc.insert(1, cmd[1])
-                            lis_complt.remove(f"{cmd[1]}")
-                            lis_complt.insert(1, cmd[1])
-                            break
-                        else:
-                            msc.remove(f"{cmd[1]}")
-                            msc.insert(0, cmd[1])
-                            lis_complt.remove(f"{cmd[1]}")
-                            lis_complt.insert(0, cmd[1])
-                            break
-                    posicao += 1
-
-def ended(msc, lis_complt):
+                nextoo = True
+                ult_nxt.append(cmd[1])
+                posicao = pos_msc_tcd
+                if pos_msc_tcd == 0 and tcd_msc == False:
+                    msc.remove(f"{cmd[1]}")
+                    lis_complt.remove(f"{cmd[1]}")
+                    msc.insert(pos_msc_tcd, cmd[1])
+                    lis_complt.insert(pos_msc_tcd, cmd[1])
+                elif pos_msc_tcd != 0 and tcd_msc == False:
+                    msc.remove(f"{cmd[1]}")
+                    lis_complt.remove(f"{cmd[1]}")
+                    if pos_msc_tcd == len(msc):
+                        pos_msc_tcd = 0
+                        msc.insert(pos_msc_tcd, cmd[1])
+                        lis_complt.insert(pos_msc_tcd, cmd[1])
+                else:
+                    msc.remove(f"{cmd[1]}")
+                    lis_complt.remove(f"{cmd[1]}")
+                    if pos_msc_tcd == len(msc):
+                        pos_msc_tcd = 0
+                        msc.insert(pos_msc_tcd, cmd[1])
+                        lis_complt.insert(pos_msc_tcd, cmd[1])
+                    else:
+                        msc.insert(pos_msc_tcd, cmd[1])
+                        lis_complt.insert(pos_msc_tcd, cmd[1])                          
+        else:
+            nextoo = False
+            return
+def ended(msc, pos_msc_tcd): # A lista nao muda, só a posição que sim
     if len(msc) != 0:
-        musica_atual = msc[0]
-        msc.append(musica_atual)
-        msc.pop(0)
-        for i in range (len(msc)):
-            lis_complt[i] = msc[i]
-        
-    return msc, lis_complt
+        pos_msc_tcd += 1
+        if pos_msc_tcd == len(msc):
+            pos_msc_tcd = 0
+        return pos_msc_tcd
 
-def undo(lis_und, msc, lis_complt, cmd, tcd_msc, ult_del, lis_ate_aqui):
+def undo(lis_und, msc, lis_complt, cmd, tcd_msc, ult_del, lis_ate_aqui, pos_msc_tcd, ult_nxt):
     global posicao
     global iniciou
-
+    
     if len(lis_und) != 0:
-
         if lis_und[-1] == "add":
-            lis_und.pop()
-            msc.pop()
-            lis_complt.pop()
-            return tcd_msc
-
-        elif lis_und[-1] == "del":
-            lis_und.pop()
-            i = 0
-            while True:
-                if len(lis_complt) != 0:
-                    if lis_complt[i] in ult_del:
-                        msc.insert(pos_del, ult_del[i])
-                        ult_del.pop(0)
-                        break
-                    else:
-                        return
-                i += 1
-                
-            return tcd_msc
-
-        elif lis_und[-1] == "next":
-            lis_und.pop()
-            if tcd_msc == True:
-                musica = msc[1]
-                msc.remove(f"{msc[1]}")
-                msc.insert(posicao, musica)
-                lis_complt.remove(f"{lis_complt[1]}")
-                lis_complt.insert(posicao, musica)
+            if adicionou == True:
+                lis_und.pop()
+                msc.pop()
+                lis_complt.pop()
                 return tcd_msc
             else:
-                musica = msc[0]
-                msc.remove(f"{msc[0]}")
-                msc.insert(posicao, musica)
-                lis_complt.remove(f"{lis_complt[0]}")
-                lis_complt.insert(posicao, musica)
-                
+                lis_und.pop()
+                return tcd_msc
+
+        elif lis_und[-1] == "del":
+            if deletou == True:
+                lis_und.pop()
+                i = 0
+                while True:
+                    if len(lis_complt) != 0:
+                        if lis_complt[i] in ult_del:  
+                            msc.insert(pos_del, ult_del[0])
+                            ult_del.pop(0)
+                            break
+                        else:
+                            i += 1
+                return tcd_msc
+            else:
+                lis_und.pop()
+                return tcd_msc
+
+        elif lis_und[-1] == "next": # Inserir a pos_msc_tcd
+            if nextoo == True:
+                lis_und.pop() 
+
+                posicao = 0
+                if pos_msc_tcd == 0 and tcd_msc == False:
+                    msc.remove(f"{cmd[1]}")
+                    lis_complt.remove(f"{cmd[1]}")
+                    msc.insert(pos_msc_tcd, cmd[1])
+                    lis_complt.insert(pos_msc_tcd, cmd[1])
+                elif pos_msc_tcd != 0 and tcd_msc == False:
+                    msc.remove(f"{cmd[1]}")
+                    lis_complt.remove(f"{cmd[1]}")
+                    if pos_msc_tcd == len(msc):
+                        pos_msc_tcd = 0
+                        msc.insert(pos_msc_tcd, cmd[1])
+                        lis_complt.insert(pos_msc_tcd, cmd[1])
+                else:
+                    msc.remove(f"{cmd[1]}")
+                    lis_complt.remove(f"{cmd[1]}")
+                    if pos_msc_tcd == len(msc):
+                        pos_msc_tcd = 0
+                        msc.insert(pos_msc_tcd, cmd[1])
+                        lis_complt.insert(pos_msc_tcd, cmd[1])
+                    else:
+                        msc.insert(pos_msc_tcd, cmd[1])
+                        lis_complt.insert(pos_msc_tcd, cmd[1])     
+            else:
+                lis_und.pop()
+                return tcd_msc                 
+               
 
         elif lis_und[-1] == "play":
             iniciou -= 1
@@ -177,9 +215,15 @@ musicas = []
 lista_completa = []
 lista_undo = []
 ultimo_deletado = []
+ultimo_next = []
 lista_ate_aqui = []
+deletou = False
+adicionou = False
+nextoo = False
+comecou = False
 a = "a"
 tocando_musica = False
+posicao_musica_tocando = 0
 tocou = 0
 iniciou = 0
 while comando[0] != "fight":
@@ -195,23 +239,24 @@ while comando[0] != "fight":
         elif comando[0] == "list":
             listar(musicas)
         elif comando[0] == "current":
-            current(musicas, tocando_musica, tocou)
+            current(musicas, posicao_musica_tocando)
         elif comando[0] == "undo":
             if len(comando) > 1:
                 musicas = lista_ate_aqui
                 if iniciou != 0:
                     tocando_musica = True
             else:
-                tocando_musica = undo(lista_undo, musicas, lista_completa, comando, tocando_musica, ultimo_deletado, lista_ate_aqui)
+                tocando_musica = undo(lista_undo, musicas, lista_completa, comando, tocando_musica, ultimo_deletado, lista_ate_aqui, posicao_musica_tocando, ultimo_next)
               
         elif comando[0] == "add":
             add(musicas, lista_completa, comando)
         elif comando[0] == "del":
-            delet(musicas, comando, tocando_musica, lista_completa, ultimo_deletado, lista_undo)
+            delet(musicas, comando, tocando_musica, posicao_musica_tocando, ultimo_deletado, lista_undo)
+            print(deletou)
         elif comando[0] == "next":
-            nexts(musicas, lista_completa, comando, tocando_musica)
+            nexts(musicas, lista_completa, comando, tocando_musica, posicao_musica_tocando, ultimo_next, lista_undo)
         elif tocando_musica == True and comando[0] == "ended":
-            ended(musicas, lista_completa)
+            posicao_musica_tocando = ended(musicas, posicao_musica_tocando)
             for i in range(len(musicas)):
                 lista_ate_aqui.append(musicas[i])
             lista_undo = []
