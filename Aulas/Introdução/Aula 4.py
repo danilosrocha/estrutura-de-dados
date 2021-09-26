@@ -16,7 +16,7 @@
 
 #print (f"Número ({3:5.2f})")
 
-#print (f"Número ({3.5684:.2f})")
+print (f"Número ({3.5684:02.02f})")
 
 #a, b, c = map(int, input("Digite sua data de nascimento: ").split())
 #print (f"{a:02d}/{b:02d}/{c:02d}")
