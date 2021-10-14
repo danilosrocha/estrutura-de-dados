@@ -1,4 +1,4 @@
-"""class NodoArvore:
+class NodoArvore:
     def __init__(self, chave = None, esq = None, dir = None):
         self.chave = chave
         self.esq = esq
@@ -33,6 +33,7 @@ raiz = NodoArvore(40)
 for i in [10, 60, 50, 70, 30, 20]:
     inserirABB(raiz, NodoArvore(i))
 
+
 # Caminhos em árvore
 # pré-ordem
     # Raiz, subarvore esq, subarvore dir
@@ -54,7 +55,9 @@ def pos_ordem(raiz):
         return
     pos_ordem(raiz.esq)
     pos_ordem(raiz.dir)
-    print(raiz.chave)"""
+    print(raiz.chave)
+
+em_ordem(20)
 
 """ Pior caso o(n)
 Crescente ou descrecente!
@@ -113,7 +116,7 @@ insertDir(minha_arvore, "C")
 print(minha_arvore)
 """
     
-class Arvore:
+"""class Arvore:
     def __init__(self, chave):
         self.chave = chave
         self.dir = None
@@ -157,4 +160,4 @@ r.insDir('c')
 print(r.getRightChild())
 print(r.getRightChild().getRootVal())
 r.getRightChild().setRootVal('hello')
-print(r.getRightChild().getRootVal())
+print(r.getRightChild().getRootVal())"""
