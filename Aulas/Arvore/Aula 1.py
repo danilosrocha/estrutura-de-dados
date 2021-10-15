@@ -7,41 +7,20 @@ class NodoArvore:
     def __str__(self):
         return '%s <- %s -> %s' %(self.esq and self.esq.chave, self.chave, self.dir and self.dir.chave) 
 
-
-raiz = NodoArvore(40)
-
 def inserirABB(raiz, nodo):
     if raiz is None:
         raiz = nodo
-
-    # Verificar o caso base para esq e dir None
-    elif nodo.chave > raiz.chave: #Valor vai p/ direita pq é maior que a raiz
+    elif nodo.chave > raiz.chave: 
         if raiz.dir is None:
-            raiz.dir = nodo # Valor 
+            raiz.dir = nodo 
             print(raiz)
         else:
             inserirABB(raiz.dir, nodo)
-
     else: 
         if raiz.esq is None:
             raiz.esq = nodo
         else:
             inserirABB(raiz.esq, nodo)
-            
-raiz = NodoArvore(40)
-
-for i in [10, 60, 50, 70, 30, 20]:
-    inserirABB(raiz, NodoArvore(i))
-
-
-# Caminhos em árvore
-# pré-ordem
-    # Raiz, subarvore esq, subarvore dir
-# em ordem
-    # subarvore esq, raiz, subarvore dir
-# pós-ordem
-    # subarvore esq, subarvore dir, raiz
-# em largura (livro)
 
 def em_ordem(raiz):
     if not raiz:
@@ -57,7 +36,24 @@ def pos_ordem(raiz):
     pos_ordem(raiz.dir)
     print(raiz.chave)
 
-em_ordem(20)
+raiz = NodoArvore(15)
+
+for i in [10, 60, 50, 70, 30, 20]:
+    inserirABB(raiz, NodoArvore(i))
+
+em_ordem(raiz)
+# Caminhos em árvore
+# pré-ordem
+    # Raiz, subarvore esq, subarvore dir
+# em ordem
+    # subarvore esq, raiz, subarvore dir
+# pós-ordem
+    # subarvore esq, subarvore dir, raiz
+# em largura (livro)
+
+
+
+#em_ordem(15)
 
 """ Pior caso o(n)
 Crescente ou descrecente!

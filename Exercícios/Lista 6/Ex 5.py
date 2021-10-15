@@ -1,11 +1,46 @@
 class NodoArvore:
-    def __init__(self, chave = None, esq = None, dir = None):
+    def __init__(self, chave):
         self.chave = chave
-        self.esq = esq
-        self.dir = dir
+        self.esq = None
+        self.dir = None
     
     def __str__(self):
-        return '%s' %(self.chave) 
+        return str(self.chave)
+
+    def pre_ordem(self, node=None):
+        if node is None:
+            node = self.root
+        print(node, end="")
+        if node.esq:
+            print(" ", end = "")
+            self.pre_ordem(node.esq)
+        if node.dir:
+            print(" ", end = "")
+            self.pre_ordem(node.dir)
+
+    def pos_ordem(self, node=None):
+        if node is None:
+            node = self.root
+        if node.esq:
+            self.pos_ordem(node.esq)
+            print(" ", end = "")
+        if node.dir:
+            self.pos_ordem(node.dir)
+            print(" ", end = "")
+        print(node, end="")
+
+
+    def em_ordem(self, node=None):
+        if node is None:
+            node = self.root
+        if node.esq:
+            self.em_ordem(node.esq)
+            print(" ", end = "")
+        print(node, end="")
+        if node.dir:
+            print(" ", end = "")
+            self.em_ordem(node.dir)
+            
 
 def inserirABB(raiz, nodo):
     if raiz is None:
@@ -21,39 +56,33 @@ def inserirABB(raiz, nodo):
         else:
             inserirABB(raiz.esq, nodo)
 
-def pre_ordem(raiz):
-    if not raiz:
-        return
-    print(raiz.chave)
-    em_ordem(raiz.esq)
-    em_ordem(raiz.dir)
+            
 
-def em_ordem(raiz):
-    if not raiz:
-        return
-    em_ordem(raiz.esq)
-    print(raiz.chave)
-    em_ordem(raiz.dir)
 
-def pos_ordem(raiz):
-    if not raiz:
-        return
-    pos_ordem(raiz.esq)
-    pos_ordem(raiz.dir)
-    print(raiz.chave)
+inicial = input()
+num = inicial.isdigit()
 
-comando = int(input())
-raiz = NodoArvore(comando)
+while num != True:
+    print()
+    inicial = input()
+    num = inicial.isdigit()
 
+base = int(inicial)
+raiz = NodoArvore(base)
+
+comando = " "
 while comando != "quack":
     comando = input()
-    if comando == "in":
-        em_ordem()
-    elif comando == "pre":
-        pre_ordem()
+    num = comando.isdigit()
+    if comando == "pre":
+        raiz.pre_ordem(raiz)
+        print()
     elif comando == "pos":
-        pos_ordem()
-    else:
+        raiz.pos_ordem(raiz)
+        print()
+    elif comando == "in":
+        raiz.em_ordem(raiz)
+        print()
+    elif num == True:
         node = int(comando)
-        print(node)
-        inserirABB(raiz, node)
+        inserirABB(raiz, NodoArvore(node))
