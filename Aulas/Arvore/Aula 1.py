@@ -1,4 +1,4 @@
-class NodoArvore:
+"""class NodoArvore:
     def __init__(self, chave = None, esq = None, dir = None):
         self.chave = chave
         self.esq = esq
@@ -41,7 +41,7 @@ raiz = NodoArvore(15)
 for i in [10, 60, 50, 70, 30, 20]:
     inserirABB(raiz, NodoArvore(i))
 
-em_ordem(raiz)
+em_ordem(raiz)"""
 # Caminhos em árvore
 # pré-ordem
     # Raiz, subarvore esq, subarvore dir
@@ -84,7 +84,7 @@ print(maximo(raiz))
 print(minimo(raiz))
 """
 
-"""# Inserção com listas Livro
+# Inserção com listas Livro
 def arvore_Bin(r):
     return [r, [], []]
 
@@ -110,7 +110,7 @@ insertEsq(minha_arvore[1], "D") # Faz com que matenha a ordem dos inseridos
 insertEsq(minha_arvore[1][1], "E")
 insertDir(minha_arvore, "C")
 print(minha_arvore)
-"""
+
     
 """class Arvore:
     def __init__(self, chave):
@@ -157,3 +157,46 @@ print(r.getRightChild())
 print(r.getRightChild().getRootVal())
 r.getRightChild().setRootVal('hello')
 print(r.getRightChild().getRootVal())"""
+
+
+"""RAIZ = "raiz"
+
+class Fila:
+    def __init__(self):
+        self.items = []
+
+    def isEmpty(self):
+        return self.items == []
+
+    def enqueue(self, item):
+        self.items.insert(0,item)
+
+    def dequeue(self):
+        return self.items.pop()
+    
+    def size(self):
+        return len(self.items)
+
+class Arvore:
+    def __init__(self, chave):
+        self.chave = chave
+        self.esq = None
+        self.dir = None
+
+    def __str__(self):
+        return '%s' %(self.chave)
+
+    def em_altura(self, node = RAIZ):
+        if node == RAIZ:
+            node = self.chave
+        
+        fila = Fila()
+        fila.enqueue(node)
+        while not fila.isEmpty():
+            node = fila.dequeue()
+            print(node, end = " ")
+            if node.esq:
+                fila.enqueue(node.esq)
+            if node.dir:
+                fila.enqueue(node.dir)
+                """

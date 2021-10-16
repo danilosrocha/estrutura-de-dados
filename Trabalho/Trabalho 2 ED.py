@@ -1,6 +1,4 @@
-import operator
-RAIZ = "raiz"
-
+RAIZ = " "
 class Fila:
     def __init__(self):
         self.items = []
@@ -18,14 +16,30 @@ class Fila:
         return len(self.items)
 
 class Arvore:
-    def __init__(self, chave):
-        self.chave = chave
+    def __init__(self, raiz):
+        self.chave = raiz
         self.esq = None
         self.dir = None
 
     def __str__(self):
-        return '%s' %(self.chave)
+        return '%s' %(self.chave) 
+         
+    def insertEsq(self, novoNo):
+        if self.esq == None:
+            self.esq = Arvore("*")
+        else:
+            t = Arvore(novoNo)
+            t.esq = self.esq
+            self.esq = t
 
+    def insertDir(self, novoNo):
+        if self.dir == None:
+            self.dir = Arvore(novoNo)
+        else:
+            t = Arvore(novoNo)
+            t.dir = self.dir
+            self.dir = t
+    
     def em_altura(self, node = RAIZ):
         if node == RAIZ:
             node = self.chave
@@ -39,7 +53,19 @@ class Arvore:
                 fila.enqueue(node.esq)
             if node.dir:
                 fila.enqueue(node.dir)
-              
+    
+    def getDir(self):
+        return self.dir
+
+    def getEsq(self):
+        return self.esq
+
+    def setRaiz(self, obj):
+        self.chave = obj
+
+    def getRaizVal(self):
+        return self.chave
+
 
 numeros = int(input())
 dicionario1 = {}
@@ -88,3 +114,25 @@ elif mensagem == 0:
                 exit()
     print("".join(Lista_mensagem))
 
+mA = Arvore("*")
+
+for codigo, letra in dicionario2.items():
+    #for analise in codigo:
+    if codigo[0] == ".":
+        mA.insertEsq(letra)
+    elif codigo[0] == "-":
+        mA.insertEsq(letra)
+
+mA.em_altura(mA)
+
+""" Teste
+5
+A .
+C -
+R .-
+T ..
+! -.
+0
+. .. . - . .- -.
+
+"""
