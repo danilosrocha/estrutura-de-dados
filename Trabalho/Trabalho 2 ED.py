@@ -16,29 +16,31 @@ class Fila:
         return len(self.items)
 
 class Arvore:
-    def __init__(self, raiz):
-        self.chave = raiz
+    def __init__(self, altura):
+        self.altura = altura
+        self.chave = "*"
         self.esq = None
         self.dir = None
 
     def __str__(self):
         return '%s' %(self.chave) 
-         
-    def insertEsq(self, novoNo):
-        if self.esq == None:
-            self.esq = Arvore("*")
-        else:
-            t = Arvore(novoNo)
-            t.esq = self.esq
-            self.esq = t
 
-    def insertDir(self, novoNo):
-        if self.dir == None:
-            self.dir = Arvore(novoNo)
-        else:
-            t = Arvore(novoNo)
-            t.dir = self.dir
-            self.dir = t
+    def insert(self, elem):
+        
+        if len(elem[1]) == self.altura:
+            self.chave = elem[0]
+        elif len(elem[1])> self.altura:
+            ta  = Arvore(self.altura+1)
+            if elem[1][self.altura] == '.':
+                if not self.esq: 
+                    self.esq = ta
+                else: ta=self.esq
+            else:
+                if not self.dir: 
+                    self.dir = ta
+                else: ta=self.dir
+                
+            ta.insert(elem)
     
     def em_altura(self, node = RAIZ):
         if node == RAIZ:
@@ -53,20 +55,8 @@ class Arvore:
                 fila.enqueue(node.esq)
             if node.dir:
                 fila.enqueue(node.dir)
-    
-    def getDir(self):
-        return self.dir
 
-    def getEsq(self):
-        return self.esq
-
-    def setRaiz(self, obj):
-        self.chave = obj
-
-    def getRaizVal(self):
-        return self.chave
-
-
+mA = Arvore(0)
 numeros = int(input())
 dicionario1 = {}
 dicionario2 = {}
@@ -78,6 +68,7 @@ for cont in range(numeros):
     codigo = comando[1]
     dicionario1.update({letra:codigo})
     dicionario2.update({codigo:letra})
+    mA.insert(comando)
 
 mensagem = int(input())
 
@@ -114,25 +105,6 @@ elif mensagem == 0:
                 exit()
     print("".join(Lista_mensagem))
 
-mA = Arvore("*")
-
-for codigo, letra in dicionario2.items():
-    #for analise in codigo:
-    if codigo[0] == ".":
-        mA.insertEsq(letra)
-    elif codigo[0] == "-":
-        mA.insertEsq(letra)
-
 mA.em_altura(mA)
 
-""" Teste
-5
-A .
-C -
-R .-
-T ..
-! -.
-0
-. .. . - . .- -.
 
-"""
